@@ -246,42 +246,42 @@ class Mesh : public painlessmesh::Mesh<Connection> {
     eventScanDoneHandler = WiFi.onEvent(
         [this](WiFiEvent_t event, WiFiEventInfo_t info) {
           if (this->semaphoreTake()) {
-            Log(CONNECTION, "eventScanDoneHandler: ARDUINO_EVENT_SCAN_DONE\n");
+            Log(CONNECTION, "eventScanDoneHandler: ARDUINO_EVENT_WIFI_SCAN_DONE\n");
             this->stationScan.scanComplete();
             this->semaphoreGive();
           }
         },
-        WiFiEvent_t::ARDUINO_EVENT_SCAN_DONE);
+        WiFiEvent_t::ARDUINO_EVENT_WIFI_SCAN_DONE);
 
     eventSTAStartHandler = WiFi.onEvent(
         [this](WiFiEvent_t event, WiFiEventInfo_t info) {
           if (this->semaphoreTake()) {
-            Log(CONNECTION, "eventSTAStartHandler: ARDUINO_EVENT_STA_START\n");
+            Log(CONNECTION, "eventSTAStartHandler: ARDUINO_EVENT_WIFI_STA_START\n");
             this->semaphoreGive();
           }
         },
-        WiFiEvent_t::ARDUINO_EVENT_STA_START);
+        WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_START);
 
     eventSTADisconnectedHandler = WiFi.onEvent(
         [this](WiFiEvent_t event, WiFiEventInfo_t info) {
           if (this->semaphoreTake()) {
             Log(CONNECTION,
-                "eventSTADisconnectedHandler: ARDUINO_EVENT_STA_DISCONNECTED\n");
+                "eventSTADisconnectedHandler: ARDUINO_EVENT_WIFI_STA_DISCONNECTED\n");
             this->droppedConnectionCallbacks.execute(0, true);
             this->semaphoreGive();
           }
         },
-        WiFiEvent_t::ARDUINO_EVENT_STA_DISCONNECTED);
+        WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
 
     eventSTAGotIPHandler = WiFi.onEvent(
         [this](WiFiEvent_t event, WiFiEventInfo_t info) {
           if (this->semaphoreTake()) {
-            Log(CONNECTION, "eventSTAGotIPHandler: ARDUINO_EVENT_STA_GOT_IP\n");
+            Log(CONNECTION, "eventSTAGotIPHandler: ARDUINO_EVENT_WIFI_STA_GOT_IP\n");
             this->tcpConnect();  // Connect to TCP port
             this->semaphoreGive();
           }
         },
-        WiFiEvent_t::ARDUINO_EVENT_STA_GOT_IP);
+        WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
 #elif defined(ESP8266)
     eventSTAConnectedHandler = WiFi.onStationModeConnected(
         [&](const WiFiEventStationModeConnected &event) {
